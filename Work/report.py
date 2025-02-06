@@ -35,7 +35,25 @@ pprint(l)
 
 def read_prices(filename):
 
+    stocks = {}
+
     with open(filename, 'rt') as f:
         rows = csv.reader(f)
+        next(f)
         for row in rows:
-            
+            try:
+                if row == []:
+                    continue
+                stocks[row[0]] = float(row[1])
+            except ValueError:
+                print(f"Bad Row {row}")
+    return stocks
+
+if len(sys.argv) == 2:
+    filename = sys.argv[1]
+else:
+    filename = './Data/prices.csv'
+
+l = read_prices(filename)
+
+pprint(l)
