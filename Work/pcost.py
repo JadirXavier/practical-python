@@ -3,18 +3,31 @@
 # Exercise 1.27
 
 import os
+import csv
+import sys
 
-f = open('./Data/portfolio.csv','rt')
-next(f)
+def portfolio_cost(filename):
+    f = open(filename,'rt')
+    rows = csv.reader(f)
+    next(f)
 
-total = 0
+    total = 0
 
-for line in f:
-    row = line.replace('\n','').split(',')
-    price = float(row[-1])*float(row[-2])
-    print(price)
-    total += price
+    for row in rows:
+        try:
+            price = float(row[-1])*float(row[-2])
+            print(price)
+            total += price
+        except ValueError:
+            print(f"Bad Row: {row}")
 
-print(f'Total cost ${total:0.2f}')
+    f.close()
+    return total
 
-f.close()
+if len(sys.argv) == 2:
+    filename = sys.argv[1]
+else:
+    filename = './Data/portfolio.csv'
+
+cost = portfolio_cost(filename)
+print(f'Total cost ${cost:0.2f}')
