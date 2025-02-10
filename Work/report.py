@@ -33,6 +33,7 @@ pprint(l)
 
 '''
 
+'''
 def read_prices(filename):
 
     stocks = {}
@@ -54,6 +55,51 @@ if len(sys.argv) == 2:
 else:
     filename = './Data/prices.csv'
 
+def make_report(data):
+    
+
 l = read_prices(filename)
 
-pprint(l)
+
+print(f'l')
+'''
+
+def make_report(portfolio, price):
+    stocks = []
+    prices = {}
+
+    with open(portfolio, 'rt') as f:
+        rows = csv.reader(f)
+        next(f)
+        for row in rows:
+            try:
+                stocks.append({'name':row[0], 'shares': int(row[1]), 'price': float(row[2])})
+            except ValueError:
+                print(f"Bad Row {row}")
+
+    with open(price, 'rt') as f2:
+        rows = csv.reader(f2)
+        for row in rows:
+            try:
+                if row == []:
+                    continue
+                prices[row[0]] = float(row[1])
+            except ValueError:
+                print(f"Bad Row {row}")
+    
+    report = []
+
+    for dict in stocks:
+        if dict['name'] in prices:
+            report.append((dict['name'], dict['shares'], prices[dict['name']], prices[dict['name']] - dict['price']))
+        else:
+            continue
+    headers = ('Name', 'Shares', 'Price', 'Change')
+    print(headers)
+    print('---------- ---------- ---------- -----------')
+    for name, shares, price, change in report:
+        print(f'{name:>10s} {shares:>10d} {price:>10.2f} {change:>10.2f}')
+
+
+make_report('./Data/portfolio.csv','./Data/prices.csv')
+
