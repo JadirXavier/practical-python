@@ -95,11 +95,10 @@ def make_report(portfolio, price):
         else:
             continue
     headers = ('Name', 'Shares', 'Price', 'Change')
-    print(headers)
+    print(f'{headers[0]:>10s} {headers[1]:>10s} {headers[2]:>10s} {headers[3]:>10s}')
     print('---------- ---------- ---------- -----------')
     for name, shares, price, change in report:
-        print(f'{name:>10s} {shares:>10d} {price:>10.2f} {change:>10.2f}')
-
+        print(f'{name:>10s} {shares:>10d} {f"${price:.2f}":>10s} {change:>10.2f}')
 
 make_report('./Data/portfolio.csv','./Data/prices.csv')
 
